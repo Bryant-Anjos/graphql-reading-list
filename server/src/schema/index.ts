@@ -1,28 +1,38 @@
-import { GraphQLObjectType, GraphQLString, GraphQLSchema } from 'graphql'
+import { GraphQLObjectType, GraphQLSchema, GraphQLID } from 'graphql'
 
-import { BookType } from './book.schema'
+import { BookType, Book } from './book.schema'
+import { AuthorType, Author } from './author.schema'
+import { books, authors } from './data'
 
-const books = [
-  { name: 'Name of the Wind', genre: 'Fantasy', id: '1' },
-  { name: 'The Final Empire', genre: 'Fantasy', id: '2' },
-  { name: 'The Long Earth', genre: 'Sci-Fi', id: '3' },
-]
+interface RootQuery {
+  book: Book
+  author: Author
+}
 
-const RootQuery = new GraphQLObjectType({
+const RootQueryType = new GraphQLObjectType<RootQuery>({
   name: 'RootQueryType',
   fields: {
     book: {
       type: BookType,
       args: {
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
       },
       resolve(parent, args) {
         return books.find(book => book.id === args.id)
+      },
+    },
+    author: {
+      type: AuthorType,
+      args: {
+        id: { type: GraphQLID },
+      },
+      resolve(parent, args) {
+        return authors.find(author => author.id === args.id)
       },
     },
   },
 })
 
 export default new GraphQLSchema({
-  query: RootQuery,
+  query: RootQueryType,
 })

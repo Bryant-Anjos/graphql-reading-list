@@ -1,10 +1,26 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql'
+import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql'
 
-export const BookType = new GraphQLObjectType({
+import { AuthorType } from './author.schema'
+import { authors } from './data'
+
+export interface Book {
+  id: string
+  name: string
+  genre: string
+  authorId: string
+}
+
+export const BookType: GraphQLObjectType<Book> = new GraphQLObjectType({
   name: 'Book',
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     name: { type: GraphQLString },
     genre: { type: GraphQLString },
+    author: {
+      type: AuthorType,
+      resolve(parent, args) {
+        return authors.find(author => author.id === parent.authorId)
+      },
+    },
   }),
 })
