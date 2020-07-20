@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString, GraphQLID } from 'graphql'
 
 import { AuthorType } from './author.schema'
-import { authors } from './data'
+import AuthorSchema from '../models/author.model'
 
 export interface Book {
   id: string
@@ -19,7 +19,7 @@ export const BookType: GraphQLObjectType<Book> = new GraphQLObjectType({
     author: {
       type: AuthorType,
       resolve(parent, args) {
-        return authors.find(author => author.id === parent.authorId)
+        return AuthorSchema.findById(parent.authorId)
       },
     },
   }),

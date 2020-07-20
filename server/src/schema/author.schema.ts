@@ -5,8 +5,9 @@ import {
   GraphQLInt,
   GraphQLList,
 } from 'graphql'
+
 import { BookType } from './book.schema'
-import { books } from './data'
+import BookSchema from '../models/book.model'
 
 export interface Author {
   id: string
@@ -23,7 +24,7 @@ export const AuthorType: GraphQLObjectType<Author> = new GraphQLObjectType({
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
-        return books.filter(book => book.authorId === parent.id)
+        return BookSchema.find({ authorId: parent.id })
       },
     },
   }),
