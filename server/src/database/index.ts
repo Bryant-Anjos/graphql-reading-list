@@ -1,15 +1,15 @@
-import mongoose from 'mongoose'
+import mongoose, { Mongoose } from 'mongoose'
 
 class Database {
-  private mongoConnection: Promise<typeof mongoose>
+  private mongoConnection: Mongoose
 
   constructor() {
     this.mongo()
   }
 
-  mongo() {
+  async mongo() {
     if (process.env.MONGO_URL) {
-      this.mongoConnection = mongoose.connect(process.env.MONGO_URL, {
+      this.mongoConnection = await mongoose.connect(process.env.MONGO_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: true,
