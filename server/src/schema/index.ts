@@ -3,11 +3,14 @@ import {
   GraphQLSchema,
   GraphQLID,
   GraphQLList,
+  GraphQLString,
+  GraphQLInt,
 } from 'graphql'
 
 import { BookType, Book } from './book.schema'
 import { AuthorType, Author } from './author.schema'
-import { books, authors } from './data'
+import BookSchema from '../models/book.model'
+import AuthorSchema from '../models/author.model'
 
 interface RootQuery {
   book: Book
@@ -25,7 +28,7 @@ const RootQueryType = new GraphQLObjectType<RootQuery>({
         id: { type: GraphQLID },
       },
       resolve(parent, args) {
-        return books.find(book => book.id === args.id)
+        // return books.find(book => book.id === args.id)
       },
     },
     author: {
@@ -34,19 +37,39 @@ const RootQueryType = new GraphQLObjectType<RootQuery>({
         id: { type: GraphQLID },
       },
       resolve(parent, args) {
-        return authors.find(author => author.id === args.id)
+        // return authors.find(author => author.id === args.id)
       },
     },
     books: {
       type: new GraphQLList(BookType),
       resolve() {
-        return books
+        // return books
       },
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve() {
-        return authors
+        // return authors
+      },
+    },
+  },
+})
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: GraphQLString },
+        age: { type: GraphQLInt },
+      },
+      resolve(parent, args) {
+        const author = new AuthorSchema({
+          name: args.name,
+          age: args.age,
+        })
+        return author.save()
       },
     },
   },
@@ -54,4 +77,5 @@ const RootQueryType = new GraphQLObjectType<RootQuery>({
 
 export default new GraphQLSchema({
   query: RootQueryType,
+  mutation: Mutation,
 })
