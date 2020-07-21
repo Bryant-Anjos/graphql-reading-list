@@ -1,6 +1,12 @@
 import React from 'react'
 import { useQuery, gql } from '@apollo/client'
 
+interface Book {
+  id: string
+  name: string
+  genre: string
+}
+
 const GET_BOOKS_QUERY = gql`
   {
     books {
@@ -11,12 +17,18 @@ const GET_BOOKS_QUERY = gql`
 `
 
 const BookList: React.FC = () => {
-  const { loading, error, data } = useQuery(GET_BOOKS_QUERY)
+  const { loading, data } = useQuery<{ books: Book[] }>(GET_BOOKS_QUERY)
+
+  if (loading) {
+    return <div>Loading books...</div>
+  }
 
   return (
     <div>
       <ul id="book-list">
-        <li>Book name</li>
+        {data?.books.map(book => (
+          <li key={book.id}>{book.name}</li>
+        ))}
       </ul>
     </div>
   )
