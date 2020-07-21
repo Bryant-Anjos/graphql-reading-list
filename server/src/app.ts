@@ -1,6 +1,7 @@
 import 'dotenv/config'
 
 import express from 'express'
+import cors from 'cors'
 import { graphqlHTTP } from 'express-graphql'
 
 import schema from './schema'
@@ -17,6 +18,7 @@ class App {
   }
 
   middlewares() {
+    this.server.use(cors())
     this.server.use(
       '/graphql',
       graphqlHTTP({
