@@ -1,23 +1,11 @@
 import React from 'react'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 
-interface Book {
-  id: string
-  name: string
-  genre: string
-}
-
-const GET_BOOKS_QUERY = gql`
-  {
-    books {
-      name
-      id
-    }
-  }
-`
+import { GET_BOOKS_QUERY } from '../../queries'
+import { IBook } from '../../@types/book'
 
 const BookList: React.FC = () => {
-  const { loading, data } = useQuery<{ books: Book[] }>(GET_BOOKS_QUERY)
+  const { loading, data } = useQuery<{ books: IBook[] }>(GET_BOOKS_QUERY)
 
   if (loading) {
     return <div>Loading books...</div>

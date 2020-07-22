@@ -4,6 +4,7 @@ import { ApolloProvider } from '@apollo/client'
 import client from './config/apolo'
 
 import BookList from './components/BookList'
+import AddBook from './components/AddBook'
 
 const App: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const App: React.FC = () => {
       <div id="main">
         <h1>Ninja's Reading List</h1>
         <BookList />
+        <AddBook />
       </div>
     </ApolloProvider>
   )
