@@ -15,7 +15,7 @@ const BookDetails: React.FC<{ id: string }> = ({ id }: { id: string }) => {
   const book = useMemo(() => data?.book, [data])
 
   if (loading) {
-    return <div>Loading book details...</div>
+    return <div id="book-details">Loading book details...</div>
   }
 
   return (
